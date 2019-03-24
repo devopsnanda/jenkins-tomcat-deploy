@@ -1,0 +1,258 @@
+
+Install Jenkins
+----------------
+First install the following 
+
+1) jdk 1.8
+2) Jenkins
+3) Maven
+
+To install JDK
+----------------
+$ sudo yum update -y
+To remove the earlier version
+$ sudo yum remove java-1.7.0-openjdk
+To install version 8
+$ sudo yum install java-1.8.0 -y
+
+To check
+$ java -version
+
+To find the Home path
+
+$ echo $JAVA_HOME
+
+/usr/lib/jvm/java
+
+To install Jenkins
+------------------
+$ sudo yum update -y
+
+To install Jenkins Repo
+$ sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+
+To import the key file from Jenkins to install from package
+
+$ sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+
+
+
+$ sudo yum install jenkins -y  (jenkins installed in /var/lib/jenkins)
+
+To start the jenkins service
+
+$ sudo service jenkins start
+
+bootup start
+
+$ sudo chkconfig jenkins on
+or 
+$ sudo systemctl start jenkins.service
+
+Now start Jenkins in browser
+http://<publicip>:8080
+
+Now copy and paste the password from the jenkins dashboard
+$ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+eg: 03a0f92e35d844569c447daa6b2e5875
+
+copy the password and follow the below
+
+Now install "Install suggested plugins"
+
+deploy to container
+pipeline build
+maven
+
+
+Now Jenkins started
+
+Jenkins default homepath 
+/var/lib/jenkins
+
+To change this homepath,
+create a directory and copy the contents to this new directory.
+Then set the homepath as 
+export JENKINS_HOME = /new-directory-path
+
+Then restart jenkins service and will take effect.
+
+To install Maven
+-----------------------------------------------------------------
+
+sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
+sudo yum install -y apache-maven
+mvn --version   (/usr/share/apache-maven )
+
+
+To install GIT
+---------------
+$sudo yum install git -y
+
+git path =/usr/bin/git
+
+plugins to be installed
+------------------------
+1)build pipeline
+2)deploy to container
+
+
+To remove jenkins
+------------------
+
+$sudo service jenkins stop
+
+To remove jenkins
+
+$ sudo yum remove jenkins
+
+
+Backup and Restore Jenkins 
+
+ install backup plugins
+
+ configure the backup and restore
+Once restore, backup will create jenkins_retore directory and permission need to be given (777 and chown to jenkins:jenkins)
+
+set the path for backup directory
+
+Once the jenkins is crashed, reinstall jenkins and restore from backup.
+
+Freestyle
+pipeline
+---------------------------------------
+Master slave
+---------------------------------------
+
+MAster side installations
+
+Jenkins
+java
+maven
+git
+
+Node side install
+---------------
+java
+maven
+git
+
+
+Master side configuration
+---------------------------
+
+Slave side install
+--------------------
+
+Install Tomcat8
+----------------
+First install java8
+
+$ sudo yum update -y
+To remove the earlier version
+$ sudo yum remove java-1.7.0-openjdk
+To install version 8
+$ sudo yum install java-1.8.0 -y
+
+To check
+$ java -version
+
+To find the Home path
+
+$ echo $JAVA_HOME
+
+/usr/lib/jvm/java
+
+Tomcat
+------
+yum install tomcat8 tomcat8-webapps tomcat8-admin-webapps tomcat8-docs-webapp
+
+
+service tomcat8 start
+
+vim /usr/share/tomcat8/conf/tomcat-users.xml
+
+
+
+
+Check tomcat installation (/usr/share/tomcat8)
+-------------------------
+fuser -v -n tcp 8080
+
+netstat -na | grep 8080
+
+sudo chkconfig tomcat8 on
+
+The below need to be added in /usr/share/tomcat8/conf and edit tomcat-users.xml
+
+<role rolename="manager-gui"/>
+<user username="tomcat" password="tomcat" roles="manager-gui"/>
+
+
+To access the manager/html, edit the below and comment the value 127.0.0.1 (to comment <!--   and end the line with --> )
+
+sudo vim /var/lib/tomcat8/webapps/host-manager/META-INF/context.xml
+sudo vim /var/lib/tomcat8/webapps/manager/META-INF/context.xml
+
+
+To add the postbuild in jenkins
+-------------------------------
+add the plugin 
+
+Deply to container
+
+then in post build in jenkins
+
+select 
+
+deploy war/ear to a container
+
+in war/ear  ---  **/*.war
+
+context path  --- /var/lib/tomcat8/webapps
+
+containers  ---   select tomcat 8.x
+
+ and add credentials  ( To deploy add user admin/admin in conf/tomcat-users.xml and give the role "manager-script")
+
+eg: /usr/share/tomcat8/conf
+
+sudo vim tomcat-users.xml
+
+ <user username="admin" password="admin" roles="manager-script"/>
+ 
+
+  admin/admin
+
+tomcat url   ---- http://<publicip>:8080
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
