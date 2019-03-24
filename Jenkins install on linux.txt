@@ -191,6 +191,11 @@ The below need to be added in /usr/share/tomcat8/conf and edit tomcat-users.xml
 <user username="tomcat" password="tomcat" roles="manager-gui"/>
 
 
+<user username="admin" password="admin" roles="manager-script"/>
+
+
+
+
 To access the manager/html, edit the below and comment the value 127.0.0.1 (to comment <!--   and end the line with --> )
 
 sudo vim /var/lib/tomcat8/webapps/host-manager/META-INF/context.xml
@@ -219,14 +224,47 @@ containers  ---   select tomcat 8.x
 
 eg: /usr/share/tomcat8/conf
 
-sudo vim tomcat-users.xml
 
- <user username="admin" password="admin" roles="manager-script"/>
- 
-
-  admin/admin
+  
 
 tomcat url   ---- http://<publicip>:8080
+
+
+WEBHOOKS
+========
+plugins
+
+github integration
+
+select GITHUB project from general and give the maven-demo url
+
+In sourcecode management select GIT and provide the url
+
+In build trigger select github hook trigger for GITscm polling
+
+rest is same and appply and save
+
+In GITHUB
+=========
+select the MAVEN-DEMO and click settings
+
+In that select WEBHOOKS and add webload hook
+
+In payload url 
+
+http://13.232.220.90:8080/github-webhook
+
+Rest is same and add
+
+Thats it
+
+Now any changes to source will be immediately reflected
+
+==============================================================
+
+
+
+
 
 
 
