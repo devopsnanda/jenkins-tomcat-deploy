@@ -35,6 +35,10 @@ To import the key file from Jenkins to install from package
 
 $ sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
 
+sudo amazon-linux-extras install epel -y 
+sudo yum update -y 
+sudo yum install jenkins java-1.8.0-openjdk-devel
+
 
 
 $ sudo yum install jenkins -y  (jenkins installed in /var/lib/jenkins)
